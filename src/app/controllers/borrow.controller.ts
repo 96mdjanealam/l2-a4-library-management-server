@@ -4,12 +4,15 @@ import { Book } from "../models/book.model";
 
 export const borrowRoutes = express.Router();
 
-borrowRoutes.post("/", async (req: Request, res: Response) => {
+borrowRoutes.post("/:bookId", async (req: Request, res: Response) => {
   try {
-    const { book: bookId, quantity } = req.body;
+    const { bookId } = req.params;
+    const { quantity,dueDate } = req.body;
 
+    console.log(bookId);
+    console.log(req.body);
     const bookToBorrow = await Book.findById(bookId);
-
+    console.log("book to borrow", bookToBorrow);
     if (!bookToBorrow) {
       res.status(404).json({
         success: false,
@@ -17,7 +20,6 @@ borrowRoutes.post("/", async (req: Request, res: Response) => {
       });
       return;
     }
-
     if (bookToBorrow.copies < quantity) {
       res.status(409).json({
         success: false,
@@ -27,10 +29,13 @@ borrowRoutes.post("/", async (req: Request, res: Response) => {
     }
 
     bookToBorrow.copies -= quantity;
-    bookToBorrow.updateAvailability();
     await bookToBorrow.save();
 
-    const borrow = await Borrow.create(req.body);
+    const borrow = await Borrow.create({
+      book: bookId,
+      quantity,
+      dueDate,
+    });
 
     res.status(201).json({
       success: true,

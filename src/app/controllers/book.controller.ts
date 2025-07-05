@@ -6,10 +6,16 @@ export const bookRoutes = express.Router();
 // Post a book
 bookRoutes.post("/", async (req: Request, res: Response) => {
   try {
-    const book = await Book.create(req.body);
+    const body = req.body;
+    if (body.copies === 0) {
+      body.available = false;
+    }
+
+    const book = await Book.create(body);
+
     res.status(201).json({
       success: true,
-      Message: "Book created successfully",
+      message: "Book created successfully",
       data: book,
     });
   } catch (error: any) {
@@ -20,6 +26,7 @@ bookRoutes.post("/", async (req: Request, res: Response) => {
     });
   }
 });
+
 
 // Get all books
 bookRoutes.get("/", async (req: Request, res: Response) => {
@@ -32,12 +39,12 @@ bookRoutes.get("/", async (req: Request, res: Response) => {
     }
 
     const sortField = sortBy || "createdAt";
-    const sortDirection = sort === "desc" ? -1 : 1;
+    const sortDirection = sort === "asc" ? 1 : -1;
     const sortOption: { [key: string]: 1 | -1 } = {
       [sortField as string]: sortDirection,
     };
 
-    const resultLimit = limit ? parseInt(limit as string, 10) : 10;
+    const resultLimit = limit ? parseInt(limit as string, 10) : 0;
 
     const books = await Book.find(query).sort(sortOption).limit(resultLimit);
 
@@ -76,13 +83,13 @@ bookRoutes.get("/:bookId", async (req: Request, res: Response) => {
 });
 
 // Update a book by Id
-bookRoutes.put("/:bookId", async (req: Request, res: Response) => {
+bookRoutes.put("/edit-book/:bookId", async (req: Request, res: Response) => {
   try {
     const bookId = req.params.bookId;
     const updateData = req.body;
 
-    if (updateData.copies > 0) {
-      updateData.available = true;
+    if (updateData.copies === 0) {
+      updateData.available = false;
     }
 
     const book = await Book.findByIdAndUpdate(bookId, updateData, {
@@ -92,7 +99,7 @@ bookRoutes.put("/:bookId", async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      Message: "Book updated successfully",
+      message: "Book updated successfully",
       data: book,
     });
   } catch (error: any) {
