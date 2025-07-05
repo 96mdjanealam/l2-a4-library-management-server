@@ -17,10 +17,14 @@ const express_1 = __importDefault(require("express"));
 const borrow_model_1 = require("../models/borrow.model");
 const book_model_1 = require("../models/book.model");
 exports.borrowRoutes = express_1.default.Router();
-exports.borrowRoutes.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.borrowRoutes.post("/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { book: bookId, quantity } = req.body;
+        const { bookId } = req.params;
+        const { quantity, dueDate } = req.body;
+        console.log(bookId);
+        console.log(req.body);
         const bookToBorrow = yield book_model_1.Book.findById(bookId);
+        console.log("book to borrow", bookToBorrow);
         if (!bookToBorrow) {
             res.status(404).json({
                 success: false,
@@ -36,9 +40,12 @@ exports.borrowRoutes.post("/", (req, res) => __awaiter(void 0, void 0, void 0, f
             return;
         }
         bookToBorrow.copies -= quantity;
-        bookToBorrow.updateAvailability();
         yield bookToBorrow.save();
-        const borrow = yield borrow_model_1.Borrow.create(req.body);
+        const borrow = yield borrow_model_1.Borrow.create({
+            book: bookId,
+            quantity,
+            dueDate,
+        });
         res.status(201).json({
             success: true,
             message: "Book borrowed successfully",

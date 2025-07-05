@@ -19,10 +19,14 @@ exports.bookRoutes = express_1.default.Router();
 // Post a book
 exports.bookRoutes.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const book = yield book_model_1.Book.create(req.body);
+        const body = req.body;
+        if (body.copies === 0) {
+            body.available = false;
+        }
+        const book = yield book_model_1.Book.create(body);
         res.status(201).json({
             success: true,
-            Message: "Book created successfully",
+            message: "Book created successfully",
             data: book,
         });
     }
@@ -43,11 +47,11 @@ exports.bookRoutes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, func
             query.genre = filter;
         }
         const sortField = sortBy || "createdAt";
-        const sortDirection = sort === "desc" ? -1 : 1;
+        const sortDirection = sort === "asc" ? 1 : -1;
         const sortOption = {
             [sortField]: sortDirection,
         };
-        const resultLimit = limit ? parseInt(limit, 10) : 10;
+        const resultLimit = limit ? parseInt(limit, 10) : 0;
         const books = yield book_model_1.Book.find(query).sort(sortOption).limit(resultLimit);
         res.status(200).json({
             success: true,
@@ -83,12 +87,12 @@ exports.bookRoutes.get("/:bookId", (req, res) => __awaiter(void 0, void 0, void 
     }
 }));
 // Update a book by Id
-exports.bookRoutes.put("/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.bookRoutes.put("/edit-book/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const bookId = req.params.bookId;
         const updateData = req.body;
-        if (updateData.copies > 0) {
-            updateData.available = true;
+        if (updateData.copies === 0) {
+            updateData.available = false;
         }
         const book = yield book_model_1.Book.findByIdAndUpdate(bookId, updateData, {
             new: true,
@@ -96,7 +100,7 @@ exports.bookRoutes.put("/:bookId", (req, res) => __awaiter(void 0, void 0, void 
         });
         res.status(200).json({
             success: true,
-            Message: "Book updated successfully",
+            message: "Book updated successfully",
             data: book,
         });
     }
