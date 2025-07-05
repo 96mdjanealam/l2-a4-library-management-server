@@ -1,4 +1,4 @@
-# 📚 Library Management
+# 📚 BookSync
 
 A RESTful API built with **Node.js**, **Express**, and **MongoDB** using **TypeScript**, designed to manage books and borrowing records for a simple library system.
 
