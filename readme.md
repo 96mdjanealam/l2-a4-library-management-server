@@ -76,11 +76,11 @@ Retrieve all books. Supports query parameters:
 - `sort` — `asc` or `desc`
 - `limit` — number of results
 
-#### `GET https://booksync-server.vercel.app/:bookId`
+#### `GET https://booksync-server.vercel.app/books/:bookId`
 
 Retrieve a single book by ID.
 
-#### `PUT https://booksync-server.vercel.app/books/:bookId`
+#### `PUT https://booksync-server.vercel.app/books/edit-book/:bookId`
 
 Update book details. If `copies > 0`, `available` is automatically set to `true`.
 
@@ -98,13 +98,12 @@ Delete a book by ID.
 
 ### 🔄 Borrow
 
-#### `POST https://booksync-server.vercel.app/borrow`
+#### `POST https://booksync-server.vercel.app/borrow/:bookId`
 
 Borrow book copies.
 
 ```json
 {
-  "book": "64ab3f9e2a4b5c6d7e8f9012",
   "quantity": 2,
   "dueDate": "2025-07-18T00:00:00.000Z"
 }
