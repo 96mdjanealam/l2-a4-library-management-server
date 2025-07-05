@@ -10,11 +10,11 @@ This API allows for the creation, retrieval, update, and deletion (CRUD) of book
 
 ## 🚀 Features
 
-* 📘 Add, view, update, and delete books
-* 📈 Borrow book copies and track borrow records
-* 🧮 Aggregate borrow statistics per book
-* 🔍 Filter and sort books with query parameters
-* ✅ Built using TypeScript
+- 📘 Add, view, update, and delete books
+- 📈 Borrow book copies and track borrow records
+- 🧮 Aggregate borrow statistics per book
+- 🔍 Filter and sort books with query parameters
+- ✅ Built using TypeScript
 
 ---
 
@@ -22,8 +22,8 @@ This API allows for the creation, retrieval, update, and deletion (CRUD) of book
 
 ```bash
 # Clone the repository
-git clone https://github.com/96mdjanealam/l2-a3-express-mongoose.git
-cd l2-a3-express-mongoose
+git clone https://github.com/96mdjanealam/l2-a4-library-management-server.git
+cd l2-a4-library-management-server
 
 # Install dependencies
 npm install
@@ -51,7 +51,7 @@ npm run build
 
 ### 📘 Books
 
-#### `POST https://l2-a3-express-mongoose.vercel.app/api/books`
+#### `POST https://booksync-server.vercel.app/books`
 
 Create a new book.
 
@@ -67,20 +67,20 @@ Create a new book.
 }
 ```
 
-#### `GET https://l2-a3-express-mongoose.vercel.app/api/books`
+#### `GET https://booksync-server.vercel.app/books`
 
 Retrieve all books. Supports query parameters:
 
-* `filter` — genre
-* `sortBy` — field name (e.g., `title`)
-* `sort` — `asc` or `desc`
-* `limit` — number of results
+- `filter` — genre
+- `sortBy` — field name (e.g., `title`)
+- `sort` — `asc` or `desc`
+- `limit` — number of results
 
-#### `GET https://l2-a3-express-mongoose.vercel.app/api/books/:bookId`
+#### `GET https://booksync-server.vercel.app/:bookId`
 
 Retrieve a single book by ID.
 
-#### `PUT https://l2-a3-express-mongoose.vercel.app/api/books/:bookId`
+#### `PUT https://booksync-server.vercel.app/books/:bookId`
 
 Update book details. If `copies > 0`, `available` is automatically set to `true`.
 
@@ -90,7 +90,7 @@ Update book details. If `copies > 0`, `available` is automatically set to `true`
 }
 ```
 
-#### `DELETE https://l2-a3-express-mongoose.vercel.app/api/books/:bookId`
+#### `DELETE https://booksync-server.vercel.app/books/:bookId`
 
 Delete a book by ID.
 
@@ -98,7 +98,7 @@ Delete a book by ID.
 
 ### 🔄 Borrow
 
-#### `POST https://l2-a3-express-mongoose.vercel.app/api/borrow`
+#### `POST https://booksync-server.vercel.app/borrow`
 
 Borrow book copies.
 
@@ -112,30 +112,30 @@ Borrow book copies.
 
 Checks for available copies before allowing borrowing.
 
-#### `GET https://l2-a3-express-mongoose.vercel.app/api/borrow`
+#### `GET https://booksync-server.vercel.app/borrow`
 
 Returns aggregated borrow data:
 
 ```json
 {
-    "success": true,
-    "message": "Borrowed books summary retrieved successfully",
-    "data": [
-        {
-            "totalQuantity": 20,
-            "book": {
-                "title": "The earth book",
-                "isbn": "9780553380162"
-            }
-        },
-        {
-            "totalQuantity": 7,
-            "book": {
-                "title": "The Theory of Everything",
-                "isbn": "9780553380163"
-            }
-        }
-    ]
+  "success": true,
+  "message": "Borrowed books summary retrieved successfully",
+  "data": [
+    {
+      "totalQuantity": 20,
+      "book": {
+        "title": "The earth book",
+        "isbn": "9780553380162"
+      }
+    },
+    {
+      "totalQuantity": 7,
+      "book": {
+        "title": "The Theory of Everything",
+        "isbn": "9780553380163"
+      }
+    }
+  ]
 }
 ```
 
@@ -145,15 +145,15 @@ Returns aggregated borrow data:
 
 ### Runtime
 
-* **express** `^5.1.0`
-* **mongoose** `^8.16.0`
+- **express** `^5.1.0`
+- **mongoose** `^8.16.0`
 
 ### Dev
 
-* **typescript** `^5.8.3`
-* **ts-node-dev** `^2.0.0`
-* **@types/express** `^5.0.3`
-* **@eslint/js**, **typescript-eslint**
+- **typescript** `^5.8.3`
+- **ts-node-dev** `^2.0.0`
+- **@types/express** `^5.0.3`
+- **@eslint/js**, **typescript-eslint**
 
 ---
 
