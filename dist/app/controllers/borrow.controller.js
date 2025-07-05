@@ -21,10 +21,7 @@ exports.borrowRoutes.post("/:bookId", (req, res) => __awaiter(void 0, void 0, vo
     try {
         const { bookId } = req.params;
         const { quantity, dueDate } = req.body;
-        console.log(bookId);
-        console.log(req.body);
         const bookToBorrow = yield book_model_1.Book.findById(bookId);
-        console.log("book to borrow", bookToBorrow);
         if (!bookToBorrow) {
             res.status(404).json({
                 success: false,

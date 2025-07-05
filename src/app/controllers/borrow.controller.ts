@@ -8,11 +8,7 @@ borrowRoutes.post("/:bookId", async (req: Request, res: Response) => {
   try {
     const { bookId } = req.params;
     const { quantity,dueDate } = req.body;
-
-    console.log(bookId);
-    console.log(req.body);
     const bookToBorrow = await Book.findById(bookId);
-    console.log("book to borrow", bookToBorrow);
     if (!bookToBorrow) {
       res.status(404).json({
         success: false,
